@@ -1,5 +1,5 @@
 <script setup>
-import productos from "@/components/producto/productos.vue";
+import Contenedor from "@/components/producto/contenedor.vue";
 
 </script>
 
@@ -15,10 +15,12 @@ import productos from "@/components/producto/productos.vue";
     </nav>
   </header>
 
+  <contenedor></contenedor>
+<!--
   <main>
     <router-view />
   </main>
-
+-->
 </template>
 
 <style scoped>

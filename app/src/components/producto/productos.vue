@@ -2,89 +2,134 @@
 function extraerPedidos() {
   return [
     {
-      id: 1,
-      cliente_id: 1,
-      fecha: "2024-1-24",
-      direccion: "arriaga",
-      estado: "completado",
-      productos: [
+      idPedido: 1,
+      idUsuario: 1,
+      fechaPedido: "2024-1-24",
+      direccionEnvio: "arriaga",
+      estadoPedido: "completado",
+      ticketsProducto: [
         {
-          id: 1,
-          categoria: { id: 1, nombre: "Bebidas" },
-          nombre: "Cerveza Killer",
-          descripcion: "Producto estrella de nuestra compañía",
-          foto: "n/s",
-        },
-        {
-          id: 2,
-          categoria: { id: 1, nombre: "Bebidas" },
-          nombre: "Cerveza Smite",
-          descripcion: "Cerveza inferior a la 'Cerveza Killer'",
-          foto: "n/s",
-        },
-        {
-          id: 3,
-          categoria: { id: 2, nombre: "Carne" },
-          nombre: "Lomo adobado",
-          descripcion: "Lomo adobado completamente orgánico, sin gluten.",
-          foto: "n/s",
-        },
-      ],
+          unidades: 2,
+          formatoProducto: {
+            idFormatoProducto: 1,
+            formatoEnvase: "33cl",
+            precioUnitario: 2,
+            producto: {
+              idProducto: 1,
+              nombreProducto: "Cerveza Killer",
+              descripcionProducto: "Producto estrella de nuestra compañía",
+              fotoUrl: "https://images.unsplash.com/photo-1608270586620-248524c67de9?q=80&w=1000&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+              categoria: {
+                idCategoria: 1,
+                nombreCategoria: "Bebidas"
+              },
+            }
+          },
+        }
+      ]
     },
     {
-      id: 2,
-      cliente_id: 2,
-      fecha: "2024-1-25",
-      direccion: "example",
-      estado: "pendiente",
-      productos: [
+      idPedido: 2,
+      idUsuario: 3,
+      fechaPedido: "2024-02-10",
+      direccionEnvio: "Centro",
+      estadoPedido: "pendiente",
+      ticketsProducto: [
         {
-          id: 4,
-          categoria: { id: 3, nombre: "Postres" },
-          nombre: "Pastel de Chocolate",
-          descripcion: "Delicioso pastel de chocolate con cobertura.",
-          foto: "n/s",
+          unidades: 3,
+          formatoProducto: {
+            idFormatoProducto: 2,
+            formatoEnvase: "50cl",
+            precioUnitario: 2,
+            producto: {
+              idProducto: 2,
+              nombreProducto: "Refresco Fizz",
+              descripcionProducto: "Burbujeante y refrescante",
+              fotoUrl: "https://c7.alamy.com/compes/hrt60y/latas-de-bebidas-de-diferentes-colores-sobre-fondo-blanco-3d-rendering-hrt60y.jpg",
+              categoria: {
+                idCategoria: 2,
+                nombreCategoria: "Refrescos"
+              },
+            }
+          },
         },
         {
-          id: 5,
-          categoria: { id: 4, nombre: "Vegetariano" },
-          nombre: "Ensalada Fresca",
-          descripcion: "Ensalada con ingredientes frescos y nutritivos.",
-          foto: "n/s",
-        },
-      ],
-    },
+          unidades: 1,
+          formatoProducto: {
+            idFormatoProducto: 3,
+            formatoEnvase: "750ml",
+            precioUnitario: 5,
+            producto: {
+              idProducto: 3,
+              nombreProducto: "Vino Tinto Reserva",
+              descripcionProducto: "Añada especial, sabor intenso",
+              fotoUrl: "https://enriquetomas.com/cdn/shop/files/Vino-Tinto-Pruno-Crianza---D.O.-Ribera-del-Duero-NULL-1695368753938.jpg?v=1695368755&width=1500",
+              categoria: {
+                idCategoria: 3,
+                nombreCategoria: "Vinos"
+              },
+            }
+          },
+        }
+      ]
+    }
   ];
 }
 
-
 const pedidos = extraerPedidos();
-const productos = pedidos.productos;
 </script>
 
 <template>
-  <article v-for="pedido in pedidos">
-    <h1>Pedido: {{pedido.id}}</h1>
-    <time datetime="{{pedido.fecha}}">{{pedido.fecha}}</time>
-    <address>{{pedido.direccion}}</address>
-    <span>{{pedido.estado}}</span>
-    <table border="1">
-      <thead>
-      <tr>
-        <td>Categoría</td>
-        <td>Producto</td>
-        <td>Descripción</td>
-      </tr>
-      </thead>
-      <tbody>
-      <tr v-for="producto in pedido.productos">
-        <td>{{producto.categoria.nombre}}</td>
-        <td>{{producto.nombre}}</td>
-        <td>{{producto.descripcion}}</td>
-      </tr>
-      </tbody>
-    </table>
-  </article>
+  <template v-for="(pedido, indexPedido) in pedidos">
+    <article :id="pedido.idPedido">
+      <dl>
+        <dt>Pedido</dt>
+        <dd>{{pedido.idPedido}}</dd>
+        <dt>Fecha de pedido</dt>
+        <dd><time datetime="{{pedido.fechaPedido}}">{{pedido.fechaPedido}}</time></dd>
+        <dt>Dirección</dt>
+        <dd><address>{{pedido.direccionEnvio}}</address></dd>
+        <dt>Estado del pedido</dt>
+        <dd><span>{{pedido.estadoPedido}}</span></dd>
+      </dl>
+      <table border="1">
+        <thead>
+        <tr>
+          <td>Categoría</td>
+          <td>Producto</td>
+          <td>Descripción</td>
+          <td>Formato de envase</td>
+          <td>Unidades</td>
+          <td>Precio unitario</td>
+          <td>Precio total</td>
+          <td>Imagen</td>
+        </tr>
+        </thead>
+        <tbody>
+        <template v-for="(ticket, indexTicket) in pedido.ticketsProducto">
+          <tr :id="ticket.formatoProducto.producto.idProducto">
+            <td>{{ticket.formatoProducto.producto.categoria.nombreCategoria}}</td>
+            <td>{{ticket.formatoProducto.producto.nombreProducto}}</td>
+            <td>{{ticket.formatoProducto.producto.descripcionProducto}}</td>
+            <td>{{ticket.formatoProducto.formatoEnvase}}</td>
+            <td>{{ticket.unidades}}</td>
+            <td>{{ticket.formatoProducto.precioUnitario}}€</td>
+            <td>{{ticket.formatoProducto.precioUnitario * ticket.unidades}}€</td>
+            <td><img :src="ticket.formatoProducto.producto.fotoUrl"></td>
+          </tr>
+        </template>
+        </tbody>
+      </table>
+    </article>
+  </template>
 </template>
 
-<style scoped></style>
+<style scoped>
+table {
+  text-align: center;
+}
+img {
+  max-width: min(7rem, 100%);
+  object-fit: cover;
+}
+</style>
