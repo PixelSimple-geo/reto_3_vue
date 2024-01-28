@@ -9,18 +9,19 @@ import Contenedor from "@/components/producto/contenedor.vue";
     <nav>
       <ul>
         <li>
-          <router-link to="/productos">Ver productos</router-link>
+          <router-link to="/productos">Ver pedidos</router-link>
+        </li>
+        <li>
+          <router-link to="/productos/add">Añadir productos</router-link>
         </li>
       </ul>
     </nav>
   </header>
 
-  <contenedor></contenedor>
-<!--
   <main>
     <router-view />
   </main>
--->
+
 </template>
 
 <style scoped>

@@ -1,90 +1,38 @@
 <script setup>
-function extraerPedidos() {
-  return [
-    {
-      idPedido: 1,
-      idUsuario: 1,
-      fechaPedido: "2024-1-24",
-      direccionEnvio: "arriaga",
-      estadoPedido: "completado",
-      ticketsProducto: [
-        {
-          unidades: 2,
-          formatoProducto: {
-            idFormatoProducto: 1,
-            formatoEnvase: "33cl",
-            precioUnitario: 2,
-            producto: {
-              idProducto: 1,
-              nombreProducto: "Cerveza Killer",
-              descripcionProducto: "Producto estrella de nuestra compañía",
-              fotoUrl: "https://images.unsplash.com/photo-1608270586620-248524c67de9?q=80&w=1000&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-              categoria: {
-                idCategoria: 1,
-                nombreCategoria: "Bebidas"
-              },
-            }
-          },
-        }
-      ]
-    },
-    {
-      idPedido: 2,
-      idUsuario: 3,
-      fechaPedido: "2024-02-10",
-      direccionEnvio: "Centro",
-      estadoPedido: "pendiente",
-      ticketsProducto: [
-        {
-          unidades: 3,
-          formatoProducto: {
-            idFormatoProducto: 2,
-            formatoEnvase: "50cl",
-            precioUnitario: 2,
-            producto: {
-              idProducto: 2,
-              nombreProducto: "Refresco Fizz",
-              descripcionProducto: "Burbujeante y refrescante",
-              fotoUrl: "https://c7.alamy.com/compes/hrt60y/latas-de-bebidas-de-diferentes-colores-sobre-fondo-blanco-3d-rendering-hrt60y.jpg",
-              categoria: {
-                idCategoria: 2,
-                nombreCategoria: "Refrescos"
-              },
-            }
-          },
-        },
-        {
-          unidades: 1,
-          formatoProducto: {
-            idFormatoProducto: 3,
-            formatoEnvase: "750ml",
-            precioUnitario: 5,
-            producto: {
-              idProducto: 3,
-              nombreProducto: "Vino Tinto Reserva",
-              descripcionProducto: "Añada especial, sabor intenso",
-              fotoUrl: "https://enriquetomas.com/cdn/shop/files/Vino-Tinto-Pruno-Crianza---D.O.-Ribera-del-Duero-NULL-1695368753938.jpg?v=1695368755&width=1500",
-              categoria: {
-                idCategoria: 3,
-                nombreCategoria: "Vinos"
-              },
-            }
-          },
-        }
-      ]
-    }
-  ];
+import {ref, onMounted} from "vue";
+
+async function extraerPedidos() {
+  try {
+    const response = await fetch("http://localhost/api/pedidos");
+    if (!response.ok) throw new Error(`Http error: ${response.status}`);
+    const data = (await response.json()).pedidos;
+    console.log(data);
+    pedidos.value = data;
+  } catch (error) {
+    console.error("Fetch error: " + error.message);
+  }
 }
 
-const pedidos = extraerPedidos();
+async function eliminar(event) {
+  console.log(event.target.id);
+  const id = event.target.id;
+  const response = await fetch(`http://localhost/api/pedidos/${id}`, {method: "DELETE"})
+
+  if (!response.ok) throw new Error(`No se ha podido eliminar ${id}`);
+
+  pedidos.value = pedidos.value.filter((pedido) => pedido.id !== id);
+}
+
+const pedidos = ref([]);
+onMounted(extraerPedidos);
 </script>
 
 <template>
-  <template v-for="(pedido, indexPedido) in pedidos">
-    <article :id="pedido.idPedido">
+  <template v-for="pedido in pedidos" v-bind="pedidos">
+    <article :id="pedido.id">
       <dl>
         <dt>Pedido</dt>
-        <dd>{{pedido.idPedido}}</dd>
+        <dd>{{pedido.id}}</dd>
         <dt>Fecha de pedido</dt>
         <dd><time datetime="{{pedido.fechaPedido}}">{{pedido.fechaPedido}}</time></dd>
         <dt>Dirección</dt>
@@ -103,19 +51,21 @@ const pedidos = extraerPedidos();
           <td>Precio unitario</td>
           <td>Precio total</td>
           <td>Imagen</td>
+          <td>Eliminar</td>
         </tr>
         </thead>
         <tbody>
-        <template v-for="(ticket, indexTicket) in pedido.ticketsProducto">
-          <tr :id="ticket.formatoProducto.producto.idProducto">
-            <td>{{ticket.formatoProducto.producto.categoria.nombreCategoria}}</td>
-            <td>{{ticket.formatoProducto.producto.nombreProducto}}</td>
-            <td>{{ticket.formatoProducto.producto.descripcionProducto}}</td>
-            <td>{{ticket.formatoProducto.formatoEnvase}}</td>
+        <template v-for="ticket in pedido.ticket_productos">
+          <tr :id="ticket.formato_producto.idProducto">
+            <td>{{ticket.formato_producto.producto.categoria.nombreCategoria}}</td>
+            <td>{{ticket.formato_producto.producto.nombreProducto}}</td>
+            <td>{{ticket.formato_producto.producto.descripcionProducto}}</td>
+            <td>{{ticket.formato_producto.formatoEnvase}}</td>
             <td>{{ticket.unidades}}</td>
-            <td>{{ticket.formatoProducto.precioUnitario}}€</td>
-            <td>{{ticket.formatoProducto.precioUnitario * ticket.unidades}}€</td>
-            <td><img :src="ticket.formatoProducto.producto.fotoUrl"></td>
+            <td>{{ticket.formato_producto.precioUnitario}}€</td>
+            <td>{{ticket.formato_producto.precioUnitario * ticket.unidades}}€</td>
+            <td><img :src="ticket.formato_producto.producto.fotoURL"></td>
+            <td><button :id="pedido.id" @click="eliminar">Eliminar</button></td>
           </tr>
         </template>
         </tbody>

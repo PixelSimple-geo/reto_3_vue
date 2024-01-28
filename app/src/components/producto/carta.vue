@@ -5,11 +5,11 @@ const producto = props.producto;
 
 const detalleAbierto = ref(false);
 const checkboxInput = ref(false);
-const formatoEnvaseInput = ref(producto.formatosProducto[0].idFormatoProducto);
-const unidadesInput = ref(0);
+const formatoEnvaseInput = ref(producto.formatos_producto[0].id);
+const unidadesInput = ref(1);
 
 const precioUnitario = computed(() => {
-  return producto.formatosProducto.find((formato) => formato.idFormatoProducto === formatoEnvaseInput.value ).precioUnitario;
+  return producto.formatos_producto.find((formato) => formato.id === formatoEnvaseInput.value ).precioUnitario;
 });
 
 const precioTotal = computed(() => precioUnitario.value * unidadesInput.value);
@@ -20,65 +20,65 @@ watch(checkboxInput, newValue => detalleAbierto.value = newValue);
 
 <template>
   <article>
-    <button @click="toggleDetalle">Detalle</button>
-    <img :src="producto.fotoUrl">
-    <h1>{{producto.nombreProducto}}</h1>
-    <p>{{producto.descripcionProducto}}</p>
-    <label>
-      <input type="checkbox" v-model="checkboxInput">
-      Añadir a la cesta
-    </label>
-
-    <div class="detalle" :class="{ 'expandido': detalleAbierto, 'colapsado': !detalleAbierto }">
-      <div>
-        <label for="formato_envase">Formato del envase: </label>
-        <select id="formato_envase" v-model="formatoEnvaseInput">
-            <option v-for="formatoProducto in producto.formatosProducto" :value="formatoProducto.idFormatoProducto">
+    <div class="menu-detalle" v-if="checkboxInput">
+      <button type="button" @click="toggleDetalle">Detalle</button>
+      <div class="detalle" :class="{ 'expandido': detalleAbierto, 'colapsado': !detalleAbierto }">
+        <div>
+          <label for="formato_envase">Formato del envase: </label>
+          <select id="formato_envase" v-model="formatoEnvaseInput" name="idFormatoProducto[]">
+            <option v-for="formatoProducto in producto.formatos_producto" :value="formatoProducto.id">
               {{formatoProducto.formatoEnvase}}
             </option>
-        </select>
+          </select>
+        </div>
+        <p>Precio unitario: {{ precioUnitario }}€</p>
+        <div>
+          <label for="unidades">Unidades: </label>
+          <input id="unidades" v-model="unidadesInput" name="unidades[]" type="number" min="1" max="5" size="5">
+        </div>
+        <p>Precio total: {{ precioTotal }}€</p>
       </div>
-      <p>Precio unitario: {{ precioUnitario }}€</p>
-      <div>
-        <label for="unidades">Unidades</label>
-        <input id="unidades" v-model="unidadesInput" type="number" min="0" max="5">
-      </div>
-      <p>Precio total: {{ precioTotal }}€</p>
     </div>
+
+    <section>
+      <img :src="producto.fotoURL" alt="Imagen del producto">
+      <div>
+        <h1>{{producto.nombreProducto}}</h1>
+        <p>{{producto.descripcionProducto}}</p>
+        <label><input type="checkbox" v-model="checkboxInput">Añadir a la cesta</label>
+      </div>
+    </section>
 
   </article>
 </template>
 
 <style scoped>
-img {
-  width: min(15rem, 100%);
-}
 article {
   border: 1px solid grey;
-  padding: 0.5em;
   position: relative;
-  background-color: white;
 }
 
-article button {
-  position: absolute;
-  top: 1.5%;
-  right: 1.5%;
+article img {
+  width: 100%;
+  object-fit: cover;
+  aspect-ratio: 1/0.8;
 }
 
 article > p {
   text-align: justify;
 }
 
-article .detalle {
-  border: 1px solid black;
+article .menu-detalle {
   position: absolute;
-  top: 7.5%;
-  z-index: 2;
-  right: 1%;
+  padding: 0.35em;
+}
+
+article .detalle {
+  margin-top: 0.5rem;
+  border: 1px solid black;
   transition: opacity 250ms;
   padding: 1em;
-  background-color: inherit;
+  background-color: white;
 }
 
 article .detalle.colapsado {
@@ -88,4 +88,19 @@ article .detalle.colapsado {
 article .detalle.expandido {
   opacity: 100%;
 }
+
+article section {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+article section div {
+  flex-grow: 1;
+  display: grid;
+  grid-template-rows: min-content 1fr min-content;
+  padding: 0.5em;
+}
+
+
 </style>

@@ -1,16 +1,17 @@
-<script setup></script>
+<script setup>
+import Contenedor from "@/components/producto/contenedor.vue";
+</script>
 
 <template>
-  <form enctype="multipart/form-data">
+  <form action="http://localhost/api/pedidos/store" method="post">
     <!-- Datos de pedido -->
     <div>
-      <label for="direccion_envio">Dirección de envío</label>
-      <input id="direccion_envio" name="direccion_envio">
+      <label for="direccionEnvio">Dirección de envío</label>
+      <input id="direccionEnvio" name="direccionEnvio">
     </div>
 
     <!-- Datos de producto -->
-    <div>
-      <select></select>
-    </div>
+    <Contenedor />
+    <button type="submit">Realizar pedido</button>
   </form>
 </template>
