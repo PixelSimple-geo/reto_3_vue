@@ -1,4 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router'
+import Index from "@/components/index.vue";
 import Productos from "@/components/producto/productos.vue";
 import ProductoPost from "@/components/producto/productoPost.vue";
 
@@ -7,8 +8,12 @@ const router = createRouter({
   routes: [
     {
       path: '/',
+      component: Index
+    },
+    {
+      path: '/index',
       name: 'home',
-      component: Productos
+      component: Index
     },
     {
       path: '/productos',
