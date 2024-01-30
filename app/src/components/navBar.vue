@@ -1,6 +1,4 @@
-<script setup>
-
-</script>
+<script setup></script>
 
 <template>
   <nav class="navbar navbar-expand-lg  bg-body-tertiary">
@@ -21,6 +19,9 @@
           <li class="nav-item">
             <router-link class="nav-link" to="/trabajaConNosotros">Trabaja con nosotros</router-link>
           </li>
+          <li class="nav-item">
+            <router-link class="nav-link" to="/iniciarSesion">Iniciar sesión</router-link>
+          </li>
           <!--
           <li class="nav-item">
             <router-link class="nav-link" to="/productos">Ver pedidos</router-link>
@@ -35,6 +36,4 @@
   </nav>
 </template>
 
-<style scoped>
-
-</style>
+<style scoped></style>

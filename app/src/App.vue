@@ -1,5 +1,4 @@
 <script setup>
-import Contenedor from "@/components/producto/contenedor.vue";
 import NavBar from "@/components/navBar.vue";
 
 </script>
@@ -13,8 +12,15 @@ import NavBar from "@/components/navBar.vue";
     <router-view />
   </main>
 
+  <footer>
+    <h1>footer</h1>
+  </footer>
 </template>
 
-<style scoped>
-
+<style>
+#app {
+  min-height: 100vh;
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+}
 </style>
