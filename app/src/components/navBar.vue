@@ -19,11 +19,16 @@
             <router-link class="nav-link" to="/">Inicio</router-link>
           </li>
           <li class="nav-item">
+            <router-link class="nav-link" to="/trabajaConNosotros">Trabaja con nosotros</router-link>
+          </li>
+          <!--
+          <li class="nav-item">
             <router-link class="nav-link" to="/productos">Ver pedidos</router-link>
           </li>
           <li class="nav-item">
             <router-link class="nav-link" to="/productos/add">Añadir productos</router-link>
           </li>
+          -->
         </ul>
       </div>
     </div>
