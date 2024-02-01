@@ -1,4 +1,4 @@
-<script setup></script>
+<script setup>defineProps(["usuarioEstaAutenticado"]);</script>
 
 <template>
   <nav class="navbar navbar-expand-lg  bg-body-tertiary">
@@ -19,17 +19,18 @@
           <li class="nav-item">
             <router-link class="nav-link" to="/trabajaConNosotros">Trabaja con nosotros</router-link>
           </li>
-          <li class="nav-item">
+          <li class="nav-item" v-if="usuarioEstaAutenticado">
+            <router-link class="nav-link" to="/pedidos">Ver pedidos</router-link>
+          </li>
+          <li class="nav-item" v-if="usuarioEstaAutenticado">
+            <router-link class="nav-link" to="/productos/add">Crear pedido</router-link>
+          </li>
+          <li class="nav-item" v-if="!usuarioEstaAutenticado">
             <router-link class="nav-link" to="/iniciarSesion">Iniciar sesión</router-link>
           </li>
-          <!--
-          <li class="nav-item">
-            <router-link class="nav-link" to="/productos">Ver pedidos</router-link>
+          <li class="nav-item" v-if="usuarioEstaAutenticado">
+            <router-link class="nav-link" to="/cerrarSesion">Cerrar sesión</router-link>
           </li>
-          <li class="nav-item">
-            <router-link class="nav-link" to="/productos/add">Añadir productos</router-link>
-          </li>
-          -->
         </ul>
       </div>
     </div>

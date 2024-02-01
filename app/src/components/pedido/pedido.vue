@@ -1,26 +1,21 @@
 <script setup>
 import {ref, onMounted} from "vue";
+import axios from "axios";
 
 async function extraerPedidos() {
-  try {
-    const response = await fetch("http://localhost/api/pedidos");
-    if (!response.ok) throw new Error(`Http error: ${response.status}`);
-    const data = (await response.json()).pedidos;
-    console.log(data);
-    pedidos.value = data;
-  } catch (error) {
-    console.error("Fetch error: " + error.message);
-  }
+  const idCliente = JSON.parse(localStorage.getItem("user")).cliente.id;
+  const response = await axios.get('http://localhost/api/pedidos/' + idCliente);
+  if (response.status < 200 || response.status > 299) {throw new Error(`Http error: ${response.status}`);}
+  const data = response.data;
+  pedidos.value = data;
 }
 
 async function eliminar(event) {
   console.log(event.target.id);
   const id = event.target.id;
   const response = await fetch(`http://localhost/api/pedidos/${id}`, {method: "DELETE"})
-
   if (!response.ok) throw new Error(`No se ha podido eliminar ${id}`);
-
-  pedidos.value = pedidos.value.filter((pedido) => pedido.id !== id);
+  else extraerPedidos();
 }
 
 const pedidos = ref([]);
@@ -30,17 +25,25 @@ onMounted(extraerPedidos);
 <template>
   <template v-for="pedido in pedidos" v-bind="pedidos">
     <article :id="pedido.id">
-      <dl>
-        <dt>Pedido</dt>
-        <dd>{{pedido.id}}</dd>
-        <dt>Fecha de pedido</dt>
-        <dd><time datetime="{{pedido.fechaPedido}}">{{pedido.fechaPedido}}</time></dd>
-        <dt>Dirección</dt>
-        <dd><address>{{pedido.direccionEnvio}}</address></dd>
-        <dt>Estado del pedido</dt>
-        <dd><span>{{pedido.estadoPedido}}</span></dd>
-      </dl>
-      <table border="1">
+      <div class="detalle">
+        <div>
+          <span>Fecha de pedido</span>
+          <time datetime="{{pedido.fechaPedido}}">{{pedido.fechaPedido}}</time>
+        </div>
+        <div>
+          <span>Dirección</span>
+          <address>{{pedido.direccionEnvio}}</address>
+        </div>
+        <div>
+          <span>Estado del pedido</span>
+          <span>{{pedido.estadoPedido}}</span>
+        </div>
+      </div>
+      <div class="botonera">
+        <button class="btn btn-danger" :id="pedido.id" @click="eliminar">Eliminar</button>
+        <button v-if="pedido.estadoPedido == 'En preparación'" class="btn btn-warning">Modificar</button>
+      </div>
+      <table>
         <thead>
         <tr>
           <td>Categoría</td>
@@ -51,7 +54,6 @@ onMounted(extraerPedidos);
           <td>Precio unitario</td>
           <td>Precio total</td>
           <td>Imagen</td>
-          <td>Eliminar</td>
         </tr>
         </thead>
         <tbody>
@@ -65,7 +67,6 @@ onMounted(extraerPedidos);
             <td>{{ticket.formato_producto.precioUnitario}}€</td>
             <td>{{ticket.formato_producto.precioUnitario * ticket.unidades}}€</td>
             <td><img :src="ticket.formato_producto.producto.fotoURL"></td>
-            <td><button :id="pedido.id" @click="eliminar">Eliminar</button></td>
           </tr>
         </template>
         </tbody>
@@ -75,11 +76,49 @@ onMounted(extraerPedidos);
 </template>
 
 <style scoped>
+.botonera {
+  padding: 1em;
+  display: flex;
+  gap: 1rem
+}
+
+address {
+  margin: unset;
+}
+
+article {
+  padding: 1em;
+}
+
+.detalle {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2rem;
+  padding: 1em;
+}
+
+.detalle > div {
+  display: grid;
+}
+
+.detalle > div :first-child {
+  text-decoration: underline;
+}
+
 table {
   text-align: center;
 }
+
+table td {
+  border: 1px solid black;
+  padding: 0.25em;
+}
+
+table thead {
+  font-weight: bold;
+}
+
 img {
-  max-width: min(7rem, 100%);
-  object-fit: cover;
+  width: min(5rem, 100%);
 }
 </style>

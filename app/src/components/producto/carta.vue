@@ -21,7 +21,7 @@ watch(checkboxInput, newValue => detalleAbierto.value = newValue);
 <template>
   <article>
     <div class="menu-detalle" v-if="checkboxInput">
-      <button type="button" @click="toggleDetalle">Detalle</button>
+      <button type="button" @click="toggleDetalle" class="btn btn-primary">Detalle</button>
       <div class="detalle" :class="{ 'expandido': detalleAbierto, 'colapsado': !detalleAbierto }">
         <div>
           <label for="formato_envase">Formato del envase: </label>
@@ -45,7 +45,7 @@ watch(checkboxInput, newValue => detalleAbierto.value = newValue);
       <div>
         <h1>{{producto.nombreProducto}}</h1>
         <p>{{producto.descripcionProducto}}</p>
-        <label><input type="checkbox" v-model="checkboxInput">Añadir a la cesta</label>
+        <label><input type="checkbox" v-model="checkboxInput"> Añadir a la cesta</label>
       </div>
     </section>
 
@@ -54,7 +54,7 @@ watch(checkboxInput, newValue => detalleAbierto.value = newValue);
 
 <style scoped>
 article {
-  border: 1px solid grey;
+  border: 1px solid black;
   position: relative;
 }
 

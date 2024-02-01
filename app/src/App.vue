@@ -1,11 +1,12 @@
 <script setup>
 import NavBar from "@/components/navBar.vue";
+import { isAuthenticated, setAuthenticationStatus } from "@/utility.js";
 
 </script>
 
 <template>
   <header>
-    <nav-bar />
+    <nav-bar :usuarioEstaAutenticado="isAuthenticated"/>
   </header>
 
   <main>
@@ -13,7 +14,7 @@ import NavBar from "@/components/navBar.vue";
   </main>
 
   <footer>
-    <h1>footer</h1>
+    hi
   </footer>
 </template>
 
