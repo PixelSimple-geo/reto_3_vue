@@ -9,7 +9,7 @@ const router = useRouter();
 async function iniciarSesion() {
   let inputData = {codigo: codigoCliente.value};
   try {
-    const response = await axios.post('http://localhost/api/sesion', inputData);
+    const response = await axios.post('http://localhost:80/api/sesion', inputData);
     let user = response.data;
     user.fecha = Date.now();
     localStorage.setItem("user", JSON.stringify(response.data));

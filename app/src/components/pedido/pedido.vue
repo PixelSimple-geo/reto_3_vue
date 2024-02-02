@@ -4,7 +4,7 @@ import axios from "axios";
 
 async function extraerPedidos() {
   const idCliente = JSON.parse(localStorage.getItem("user")).cliente.id;
-  const response = await axios.get('http://localhost/api/pedidos/' + idCliente);
+  const response = await axios.get('/api/pedidos/' + idCliente);
   if (response.status < 200 || response.status > 299) {throw new Error(`Http error: ${response.status}`);}
   const data = response.data;
   pedidos.value = data;

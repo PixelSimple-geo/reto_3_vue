@@ -16,7 +16,7 @@ const handleSubmit = async (event) => {
     idFormatoProducto: formData.getAll("idFormatoProducto[]"),
     unidades: formData.getAll("unidades[]")
   };
-  const response = await axios.post('http://localhost/api/pedidos/store', data);
+  const response = await axios.post('/api/pedidos/store', data);
   if (response.status >= 200 && response.status <= 299) {
     await router.push("/pedidos");
   }
