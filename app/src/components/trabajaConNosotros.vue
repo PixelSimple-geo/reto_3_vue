@@ -1,31 +1,60 @@
 <script setup>
+import {requestData} from "@/network.js";
+import {computed, ref} from "vue";
 
+async function enviarDatosFormulario(event) {
+  event.preventDefault();
+  try {
+    const formData = new FormData(event.target);
+    const data = {
+      email: formData.get("email"),
+      address: formData.get("address"),
+      telefono: formData.get("telefono"),
+      commentary: formData.get("commentary")
+    };
+    await requestData("mail", "POST", data);
+    message.value = "Se ha enviado su formulario correctamente";
+    statusCode.value = 200;
+  } catch (error) {
+    let responseObject = JSON.parse(error.message);
+    message.value = responseObject.message;
+    statusCode.value = responseObject.statusCode;
+  }
+}
+
+const message = ref("");
+const statusCode = ref(0);
+const isError = computed(() => {
+  return !(statusCode.value >= 200 && statusCode.value <= 299);
+});
 </script>
 
 <template>
   <h1 class="text-center">Trabaja con nosotros</h1>
   <p>
-    Para poder trabajar con nosotros, antes tenemos que realizar un estudio de tus requisitos y localización. Ubicados
-    en la parte norte de la península, ciertos lugares como el Andalucía, no podemos proporcionar la misma rapidez de
-    transporte. Debido a esto no realizamos encargos en andalucía. Para ver una lista completa de lugares a los que
-    prestamos servicios, sigue este enlace <a href="#">ubicaciones</a>
+    Si estás interesado en establecer una colaboración con nuestra empresa,
+    necesitamos realizar un análisis de tus requisitos y ubicación.
   </p>
-  <form>
-    <div class="mb-3">
-      <label for="exampleInputEmail1" class="form-label">Correo electrónico</label>
-      <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
+  <p v-if="statusCode !== 0" class="alert text-center" :class="{'alert-danger': isError, 'alert-success': !isError}"
+     role="alert">
+    {{ message }}
+  </p>
+  <form @submit="enviarDatosFormulario">
+    <div class="mb-3 form-floating">
+      <input type="email" class="form-control" id="email" name="email" aria-describedby="emailHelp">
+      <label for="email">Correo electrónico</label>
     </div>
-    <div class="mb-3">
-      <label for="address" class="form-label">Dirección de establecimiento</label>
-      <input class="form-control" id="address">
+    <div class="mb-3 form-floating">
+      <input class="form-control" id="address" name="address">
+      <label for="address">Dirección de local</label>
     </div>
-    <div class="mb-3">
-      <label for="telefono" class="form-label">Número de teléfono</label>
-      <input type="tel" class="form-control" id="telefono">
+    <div class="mb-3 form-floating">
+      <input type="tel" class="form-control" id="telefono" name="telefono">
+      <label for="telefono">Número de teléfono</label>
     </div>
-    <div class="mb-3">
-      <label for="exampleFormControlTextarea1" class="form-label">Comentario</label>
-      <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+    <div class="mb-3 form-floating">
+      <textarea class="form-control" id="commentary" name="commentary" rows="3"></textarea>
+      <label for="commentary" class="form-label">Comentario</label>
     </div>
     <button type="submit" class="btn btn-primary">Enviar</button>
   </form>

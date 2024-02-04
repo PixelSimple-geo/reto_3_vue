@@ -13,9 +13,15 @@ import { isAuthenticated, setAuthenticationStatus } from "@/utility.js";
     <router-view />
   </main>
 
-  <footer>
-    hi
+  <footer class="bg-dark text-light text-center p-3">
+    <p class="mb-0">
+      Esta página ha sido creada para un proyecto de Egibide. Si deseas ponerte en contacto con los creadores, puedes enviar un correo electrónico a
+      <a href="mailto:jorge.egea@ikasle.egibide.org" class="text-light">Jorge</a>
+      o
+      <a href="mailto:markel.onaindia@ikasle.egibide.org" class="text-light">Markel</a>.
+    </p>
   </footer>
+
 </template>
 
 <style>

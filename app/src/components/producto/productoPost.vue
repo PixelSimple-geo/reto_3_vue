@@ -15,9 +15,10 @@ const enviarDatosFormulario = async (event) => {
   };
   try {
     await requestData('pedidos/store', "POST", data);
-  } catch (error){}
-  finally {
-    router.push({name: "pedidos"});
+  } catch (error) {
+
+  } finally {
+    await router.push({name: "pedidos"});
   }
 };
 </script>

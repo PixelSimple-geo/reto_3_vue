@@ -10,11 +10,15 @@ onMounted(extraerProductos);
 </script>
 
 <template>
-  <div><carta v-for="producto in productos" :producto="producto"></carta></div>
+  <div class="wrapper">
+    <div class="container">
+      <carta v-for="producto in productos" :producto="producto"></carta>
+    </div>
+  </div>
 </template>
 
 <style scoped>
-div {
+.container {
   width: min(90rem, 100%);
   padding: 1em;
   margin-inline: auto;

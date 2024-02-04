@@ -6,7 +6,7 @@ const extraerPedidos = async () => pedidos.value = await requestData("pedidos", 
 
 async function eliminar(event) {
   const id = event.target.id;
-  const response = await requestData(`pedidos/${id}`, "DELETE");
+  await requestData(`pedidos/${id}`, "DELETE");
   pedidos.value = await extraerPedidos();
 }
 
