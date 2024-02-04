@@ -1,21 +1,13 @@
 <script setup>
-import {ref, onMounted} from "vue";
-import axios from "axios";
+import {onMounted, ref} from "vue";
+import {requestData} from "@/network.js";
 
-async function extraerPedidos() {
-  const idCliente = JSON.parse(localStorage.getItem("user")).cliente.id;
-  const response = await axios.get('/api/pedidos/' + idCliente);
-  if (response.status < 200 || response.status > 299) {throw new Error(`Http error: ${response.status}`);}
-  const data = response.data;
-  pedidos.value = data;
-}
+const extraerPedidos = async () => pedidos.value = await requestData("pedidos", "GET");
 
 async function eliminar(event) {
-  console.log(event.target.id);
   const id = event.target.id;
-  const response = await fetch(`http://localhost/api/pedidos/${id}`, {method: "DELETE"})
-  if (!response.ok) throw new Error(`No se ha podido eliminar ${id}`);
-  else extraerPedidos();
+  const response = await requestData(`pedidos/${id}`, "DELETE");
+  pedidos.value = await extraerPedidos();
 }
 
 const pedidos = ref([]);
@@ -40,8 +32,8 @@ onMounted(extraerPedidos);
         </div>
       </div>
       <div class="botonera">
-        <button class="btn btn-danger" :id="pedido.id" @click="eliminar">Eliminar</button>
-        <button v-if="pedido.estadoPedido == 'En preparación'" class="btn btn-warning">Modificar</button>
+        <button v-if="pedido.estadoPedido === 'En preparación' || pedido.estadoPedido === 'Solicitado'"
+                class="btn btn-danger" :id="pedido.id" @click="eliminar">Cancelar pedido</button>
       </div>
       <table>
         <thead>

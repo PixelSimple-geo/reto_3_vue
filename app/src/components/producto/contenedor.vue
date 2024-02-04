@@ -1,26 +1,16 @@
 <script setup>
 import Carta from "@/components/producto/carta.vue";
 import {onMounted, ref} from "vue";
+import {requestData} from "@/network.js";
 
 const productos = ref([]);
-
-async function extraerProductos() {
-  try {
-    const response = await fetch("http://localhost/api/productos");
-    if (!response.ok) throw new Error("Http error: " + response.status);
-    productos.value = await response.json();
-  } catch (error) {
-    console.error("Fetch error: " + error.message);
-  }
-}
+const extraerProductos = async () => productos.value = await requestData("productos", "GET");
 
 onMounted(extraerProductos);
 </script>
 
 <template>
-  <div>
-    <carta v-for="producto in productos" :producto="producto"></carta>
-  </div>
+  <div><carta v-for="producto in productos" :producto="producto"></carta></div>
 </template>
 
 <style scoped>

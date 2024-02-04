@@ -3,19 +3,28 @@ import {computed, defineProps, ref, watch} from "vue";
 const props = defineProps({producto: Object});
 const producto = props.producto;
 
+
 const detalleAbierto = ref(false);
 const checkboxInput = ref(false);
-const formatoEnvaseInput = ref(producto.formatos_producto[0].id);
+const formatoEnvaseId = ref(producto.formatos_producto[0].id);
 const unidadesInput = ref(1);
+const unidadesMax = computed(() => {
+  const index = producto.formatos_producto.findIndex((element) => element.id === formatoEnvaseId.value);
+  const unidades = producto.formatos_producto[index].unidades;
+  if (unidadesInput.value > unidades) unidadesInput.value = unidades;
+  return unidades;
+});
 
 const precioUnitario = computed(() => {
-  return producto.formatos_producto.find((formato) => formato.id === formatoEnvaseInput.value ).precioUnitario;
+  return producto.formatos_producto.find((formato) => formato.id === formatoEnvaseId.value ).precioUnitario;
 });
 
 const precioTotal = computed(() => precioUnitario.value * unidadesInput.value);
 
 const toggleDetalle = () => detalleAbierto.value = !detalleAbierto.value;
 watch(checkboxInput, newValue => detalleAbierto.value = newValue);
+
+
 </script>
 
 <template>
@@ -25,7 +34,7 @@ watch(checkboxInput, newValue => detalleAbierto.value = newValue);
       <div class="detalle" :class="{ 'expandido': detalleAbierto, 'colapsado': !detalleAbierto }">
         <div>
           <label for="formato_envase">Formato del envase: </label>
-          <select id="formato_envase" v-model="formatoEnvaseInput" name="idFormatoProducto[]">
+          <select id="formato_envase" v-model="formatoEnvaseId" name="idFormatoProducto[]" >
             <option v-for="formatoProducto in producto.formatos_producto" :value="formatoProducto.id">
               {{formatoProducto.formatoEnvase}}
             </option>
@@ -34,7 +43,7 @@ watch(checkboxInput, newValue => detalleAbierto.value = newValue);
         <p>Precio unitario: {{ precioUnitario }}€</p>
         <div>
           <label for="unidades">Unidades: </label>
-          <input id="unidades" v-model="unidadesInput" name="unidades[]" type="number" min="1" max="5" size="5">
+          <input id="unidades" v-model="unidadesInput" name="unidades[]" type="number" min="1" :max="unidadesMax" size="5">
         </div>
         <p>Precio total: {{ precioTotal }}€</p>
       </div>

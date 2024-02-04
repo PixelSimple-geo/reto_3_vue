@@ -1,34 +1,34 @@
 <script setup>
 import {ref} from "vue";
-import axios from "axios";
 import {useRouter} from "vue-router";
 import {checkAuthentication, setAuthenticationStatus} from "@/utility.js";
 
+import {requestData} from "@/network.js";
+
 const codigoCliente = ref("");
 const router = useRouter();
+
 async function iniciarSesion() {
-  let inputData = {codigo: codigoCliente.value};
   try {
-    const response = await axios.post('http://localhost:80/api/sesion', inputData);
-    let user = response.data;
-    user.fecha = Date.now();
-    localStorage.setItem("user", JSON.stringify(response.data));
+    let inputData = {codigo: codigoCliente.value};
+    let token = await requestData("sesion", "POST", inputData);
+    token["receivedAt"] = Date.now();
+    localStorage.setItem("token", JSON.stringify(token));
+
     const intendedRoute = sessionStorage.getItem('intendedRoute');
     if (intendedRoute) {
-      router.push(intendedRoute);
+      await router.push(intendedRoute);
       sessionStorage.removeItem('intendedRoute');
-    } else router.push({ name: 'home' });
-    setAuthenticationStatus()
+    } else await router.push({name: 'home'});
+    setAuthenticationStatus();
   } catch (error) {
-    mensajeError.value = "Código no válido";
+    mensajeError.value = JSON.parse(error.message).message;
   }
 }
 
 const mensajeError = ref("");
 
-if (checkAuthentication()) {
-  router.push({ name: 'home' });
-}
+if (checkAuthentication()) {router.push({ name: 'home' });}
 </script>
 
 <template>
