@@ -1,5 +1,6 @@
 <script setup>
 import {computed, defineProps, ref, watch} from "vue";
+import {url} from "@/network.js";
 const props = defineProps({producto: Object});
 const producto = props.producto;
 
@@ -50,7 +51,7 @@ watch(checkboxInput, newValue => detalleAbierto.value = newValue);
     </div>
 
     <section>
-      <img :src="producto.fotoURL" alt="Imagen del producto">
+      <img :src="url + '/storage/' + producto.fotoURL" alt="Imagen del producto">
       <div>
         <h1>{{producto.nombreProducto}}</h1>
         <p>{{producto.descripcionProducto}}</p>
