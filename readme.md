@@ -1,1 +1,1 @@
-Vue application
+Aplicación de vue desarrollada para el proyecto de Egibide "Reto 3 - Cerveza Killer"

@@ -1,13 +1,13 @@
 import {useRouter} from "vue-router";
 
 const router = useRouter();
-export const url = "http://localhost:80/api/";
+export const url = "http://localhost:80";
 
 export async function requestData(uri, method, data) {
     let token = localStorage.getItem("token");
     if (token != null) token = JSON.parse(token)["auth-token"];
     else token = "";
-    const response = await fetch(url + uri, {
+    const response = await fetch(url + "/api/" + uri, {
         method: method,
         body: JSON.stringify(data),
         headers: {"Content-Type": "application/json", "auth-token": token}

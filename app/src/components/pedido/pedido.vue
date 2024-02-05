@@ -1,6 +1,7 @@
 <script setup>
 import {onMounted, ref} from "vue";
 import {requestData} from "@/network.js";
+import {url} from "@/network.js";
 
 const extraerPedidos = async () => pedidos.value = await requestData("pedidos", "GET");
 
@@ -58,7 +59,7 @@ onMounted(extraerPedidos);
             <td>{{ticket.unidades}}</td>
             <td>{{ticket.formato_producto.precioUnitario}}€</td>
             <td>{{ticket.formato_producto.precioUnitario * ticket.unidades}}€</td>
-            <td><img :src="ticket.formato_producto.producto.fotoURL"></td>
+            <td><img :src="url + '/storage/' + ticket.formato_producto.producto.fotoURL"></td>
           </tr>
         </template>
         </tbody>
