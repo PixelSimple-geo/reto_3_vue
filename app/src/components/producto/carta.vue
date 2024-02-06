@@ -121,6 +121,4 @@ article section div {
   flex-direction: column;
   gap: 0.5rem;
 }
-
-
 </style>

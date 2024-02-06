@@ -3,21 +3,35 @@ import {onMounted, ref} from "vue";
 import {requestData} from "@/network.js";
 import {url} from "@/network.js";
 
-const extraerPedidos = async () => pedidos.value = await requestData("pedidos", "GET");
+const extraerPedidos = async (uri = defaultURI + "?page=1") => {
+  const respuesta = await requestData(uri, "GET");
+  pedidos.value = respuesta.data;
+  paginacion.value = respuesta.links;
+}
+
+function onLinkClick(event) {
+  const url = new URL(event.target.href);
+  const params = new URLSearchParams(url.search);
+  const pageIndex = params.get("page");
+  extraerPedidos(defaultURI + "?page=" + pageIndex);
+  window.scrollTo({top: 0,behavior: 'smooth'});
+}
 
 async function eliminar(event) {
   const id = event.target.id;
   await requestData(`pedidos/${id}`, "DELETE");
-  pedidos.value = await extraerPedidos();
+  await extraerPedidos();
 }
 
+const defaultURI = "pedidos";
 const pedidos = ref([]);
+const paginacion = ref([]);
 onMounted(extraerPedidos);
 
 </script>
 
 <template>
-  <template v-for="pedido in pedidos" v-bind="pedidos">
+  <template v-for="pedido in pedidos">
     <article :id="pedido.id">
       <div class="detalle">
         <div>
@@ -70,9 +84,22 @@ onMounted(extraerPedidos);
       </div>
     </article>
   </template>
+  <nav class="mx-auto" aria-label="Page navigation example" v-if="paginacion.length > 3">
+    <ul class="pagination">
+      <template v-for="pagina in paginacion">
+        <li class="page-item" :class="{'active' : pagina.active === true}" v-if="pagina.url !== null">
+          <a class="page-link" :href="pagina.url" @click.prevent="onLinkClick" v-html="pagina.label"></a>
+        </li>
+      </template>
+    </ul>
+  </nav>
 </template>
 
 <style scoped>
+.pagination {
+  justify-content: center;
+}
+
 .botonera {
   padding: 1em;
   display: flex;
@@ -131,9 +158,5 @@ table thead td{
 img {
   max-width: 4rem;
   aspect-ratio: 1/1.1;
-}
-.table-wrapper{
-  max-width: 100%;
-  overflow-x: auto;
 }
 </style>

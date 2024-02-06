@@ -44,12 +44,6 @@ if (checkAuthentication()) {router.push({ name: 'home' });}
   </div>
 </template>
 
-<style>
-#app {
-  align-items: center;
-}
-</style>
-
 <style scoped>
 .box > * + * {
   margin-top: 1rem;

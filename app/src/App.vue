@@ -22,7 +22,3 @@ import { isAuthenticated } from "@/utility.js";
   </footer>
 
 </template>
-
-<style setup>
-
-</style>
