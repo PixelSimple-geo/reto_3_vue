@@ -34,19 +34,19 @@ watch(checkboxInput, newValue => detalleAbierto.value = newValue);
       <button type="button" @click="toggleDetalle" class="btn btn-primary">Detalle</button>
       <div class="detalle" :class="{ 'expandido': detalleAbierto, 'colapsado': !detalleAbierto }">
         <div>
-          <label for="formato_envase">Formato del envase: </label>
+          <label for="formato_envase">Formato del envase:&nbsp;</label>
           <select id="formato_envase" v-model="formatoEnvaseId" name="idFormatoProducto[]" >
             <option v-for="formatoProducto in producto.formatos_producto" :value="formatoProducto.id">
               {{formatoProducto.formatoEnvase}}
             </option>
           </select>
         </div>
-        <p>Precio unitario: {{ parseFloat(precioUnitario).toFixed(2) }}€</p>
+        <span>Precio unitario: {{ parseFloat(precioUnitario).toFixed(2) }}€</span>
         <div>
-          <label for="unidades">Unidades: </label>
+          <label for="unidades">Unidades:&nbsp;</label>
           <input id="unidades" v-model="unidadesInput" name="unidades[]" type="number" min="1" :max="unidadesMax" size="5">
         </div>
-        <p>Precio total: {{ parseFloat(precioTotal).toFixed(2) }}€</p>
+        <span>Precio total: {{ parseFloat(precioTotal).toFixed(2) }}€</span>
       </div>
     </div>
 
@@ -114,6 +114,12 @@ article section div {
   display: grid;
   grid-template-rows: min-content 1fr min-content;
   padding: 0.5em;
+}
+
+.detalle {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
 }
 
 
