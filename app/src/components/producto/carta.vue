@@ -41,12 +41,12 @@ watch(checkboxInput, newValue => detalleAbierto.value = newValue);
             </option>
           </select>
         </div>
-        <p>Precio unitario: {{ precioUnitario }}€</p>
+        <p>Precio unitario: {{ parseFloat(precioUnitario).toFixed(2) }}€</p>
         <div>
           <label for="unidades">Unidades: </label>
           <input id="unidades" v-model="unidadesInput" name="unidades[]" type="number" min="1" :max="unidadesMax" size="5">
         </div>
-        <p>Precio total: {{ precioTotal }}€</p>
+        <p>Precio total: {{ parseFloat(precioTotal).toFixed(2) }}€</p>
       </div>
     </div>
 

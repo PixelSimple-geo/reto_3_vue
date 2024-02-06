@@ -60,8 +60,8 @@ onMounted(extraerPedidos);
               <td>{{ticket.formato_producto.producto.descripcionProducto}}</td>
               <td>{{ticket.formato_producto.formatoEnvase}}</td>
               <td>{{ticket.unidades}}</td>
-              <td>{{Math.round(ticket.formato_producto.precioUnitario)}}€</td>
-              <td>{{Math.round(ticket.formato_producto.precioUnitario * ticket.unidades)}}€</td>
+              <td>{{parseFloat(ticket.formato_producto.precioUnitario).toFixed(2)}}€</td>
+              <td>{{parseFloat(ticket.formato_producto.precioUnitario * ticket.unidades).toFixed(2)}}€</td>
               <td><img :src="url + '/storage/' + ticket.formato_producto.producto.fotoURL"></td>
             </tr>
           </template>

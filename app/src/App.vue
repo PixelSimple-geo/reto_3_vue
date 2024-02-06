@@ -1,7 +1,6 @@
 <script setup>
 import NavBar from "@/components/navBar.vue";
-import { isAuthenticated, setAuthenticationStatus } from "@/utility.js";
-
+import { isAuthenticated } from "@/utility.js";
 </script>
 
 <template>
@@ -24,10 +23,6 @@ import { isAuthenticated, setAuthenticationStatus } from "@/utility.js";
 
 </template>
 
-<style>
-#app {
-  min-height: 100vh;
-  display: grid;
-  grid-template-rows: auto 1fr auto;
-}
+<style setup>
+
 </style>
