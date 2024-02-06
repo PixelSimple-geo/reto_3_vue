@@ -65,7 +65,11 @@ watch(checkboxInput, newValue => detalleAbierto.value = newValue);
 <style scoped>
 article {
   border: 1px solid black;
+  border-radius: 5px;
+  overflow: hidden;
   position: relative;
+  color: black;
+  background-color: lightgray;
 }
 
 article img {

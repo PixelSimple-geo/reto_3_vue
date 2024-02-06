@@ -19,7 +19,7 @@
     </div>
   </div>
   <div class="presentacion-wrapper">
-    <div class="presentacion">
+    <div class="presentacion text-black">
     <h1 class="text-center">Descubre Nuestros Servicios</h1>
     <p class="text-center">
       Somos una pequeña empresa dedicada a la distribución de cerveza en España.

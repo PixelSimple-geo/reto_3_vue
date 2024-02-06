@@ -1,9 +1,9 @@
 <script setup>defineProps(["usuarioEstaAutenticado"]);</script>
 
 <template>
-  <nav class="navbar navbar-expand-lg  bg-body-tertiary">
+  <nav class="navbar navbar-expand-lg bg-dark">
     <div class="container-fluid">
-      <a class="navbar-brand">
+      <a class="navbar-brand text-white">
         <img src="./icons/logo.png" width="90">
         Cerveza Killer
       </a>
@@ -16,8 +16,8 @@
           <li class="nav-item">
             <router-link class="nav-link" to="/">Inicio</router-link>
           </li>
-          <li class="nav-item">
-            <router-link class="nav-link" to="/trabajaConNosotros">Trabaja con nosotros</router-link>
+          <li class="nav-item" v-if="!usuarioEstaAutenticado">
+            <router-link class="nav-link" to="/trabajaConNosotros" >Trabaja con nosotros</router-link>
           </li>
           <li class="nav-item" v-if="usuarioEstaAutenticado">
             <router-link class="nav-link" to="/pedidos">Ver pedidos</router-link>
@@ -37,4 +37,8 @@
   </nav>
 </template>
 
-<style scoped></style>
+<style scoped>
+.nav-link{
+  color: white;
+}
+</style>

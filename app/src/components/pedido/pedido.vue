@@ -13,6 +13,7 @@ async function eliminar(event) {
 
 const pedidos = ref([]);
 onMounted(extraerPedidos);
+
 </script>
 
 <template>
@@ -20,50 +21,53 @@ onMounted(extraerPedidos);
     <article :id="pedido.id">
       <div class="detalle">
         <div>
-          <span>Fecha de pedido</span>
+          <span>Fecha de pedido:</span>
           <time datetime="{{pedido.fechaPedido}}">{{pedido.fechaPedido}}</time>
         </div>
         <div>
-          <span>Dirección</span>
+          <span>Dirección:</span>
           <address>{{pedido.direccionEnvio}}</address>
         </div>
         <div>
-          <span>Estado del pedido</span>
-          <span>{{pedido.estadoPedido}}</span>
+          <span>Estado del pedido:</span>
+          <p>{{pedido.estadoPedido}}</p>
+        </div>
+        <div class="botonera">
+        <button v-if="pedido.estadoPedido === 'En preparación' || pedido.estadoPedido === 'Solicitado'"
+          class="btn btn-danger" :id="pedido.id" @click="eliminar">Cancelar pedido</button>
         </div>
       </div>
-      <div class="botonera">
-        <button v-if="pedido.estadoPedido === 'En preparación' || pedido.estadoPedido === 'Solicitado'"
-                class="btn btn-danger" :id="pedido.id" @click="eliminar">Cancelar pedido</button>
+
+      <div class="table-responsive">
+        <table class="table">
+          <thead class="table-dark">
+            <tr>
+              <td>Categoría</td>
+              <td>Producto</td>
+              <td>Descripción</td>
+              <td>Formato de envase</td>
+              <td>Unidades</td>
+              <td>Precio unitario</td>
+              <td>Precio total</td>
+              <td>Imagen</td>
+            </tr>
+          </thead>
+          <tbody>
+          <template v-for="ticket in pedido.ticket_productos">
+            <tr :id="ticket.formato_producto.idProducto">
+              <td>{{ticket.formato_producto.producto.categoria.nombreCategoria}}</td>
+              <td>{{ticket.formato_producto.producto.nombreProducto}}</td>
+              <td>{{ticket.formato_producto.producto.descripcionProducto}}</td>
+              <td>{{ticket.formato_producto.formatoEnvase}}</td>
+              <td>{{ticket.unidades}}</td>
+              <td>{{Math.round(ticket.formato_producto.precioUnitario)}}€</td>
+              <td>{{Math.round(ticket.formato_producto.precioUnitario * ticket.unidades)}}€</td>
+              <td><img :src="url + '/storage/' + ticket.formato_producto.producto.fotoURL"></td>
+            </tr>
+          </template>
+          </tbody>
+        </table>
       </div>
-      <table>
-        <thead>
-        <tr>
-          <td>Categoría</td>
-          <td>Producto</td>
-          <td>Descripción</td>
-          <td>Formato de envase</td>
-          <td>Unidades</td>
-          <td>Precio unitario</td>
-          <td>Precio total</td>
-          <td>Imagen</td>
-        </tr>
-        </thead>
-        <tbody>
-        <template v-for="ticket in pedido.ticket_productos">
-          <tr :id="ticket.formato_producto.idProducto">
-            <td>{{ticket.formato_producto.producto.categoria.nombreCategoria}}</td>
-            <td>{{ticket.formato_producto.producto.nombreProducto}}</td>
-            <td>{{ticket.formato_producto.producto.descripcionProducto}}</td>
-            <td>{{ticket.formato_producto.formatoEnvase}}</td>
-            <td>{{ticket.unidades}}</td>
-            <td>{{ticket.formato_producto.precioUnitario}}€</td>
-            <td>{{ticket.formato_producto.precioUnitario * ticket.unidades}}€</td>
-            <td><img :src="url + '/storage/' + ticket.formato_producto.producto.fotoURL"></td>
-          </tr>
-        </template>
-        </tbody>
-      </table>
     </article>
   </template>
 </template>
@@ -81,6 +85,7 @@ address {
 
 article {
   padding: 1em;
+  max-width: 100%;
 }
 
 .detalle {
@@ -88,30 +93,47 @@ article {
   flex-wrap: wrap;
   gap: 2rem;
   padding: 1em;
+  justify-content: space-between;
+  max-width: 60rem;
+  margin-inline: auto;
 }
 
 .detalle > div {
   display: grid;
 }
 
-.detalle > div :first-child {
+span {
   text-decoration: underline;
 }
 
 table {
   text-align: center;
+  border-radius: 10px;
+  overflow: hidden;
+  max-width: 100%;
 }
 
 table td {
   border: 1px solid black;
   padding: 0.25em;
+  vertical-align: middle; 
 }
 
 table thead {
   font-weight: bold;
 }
 
+table thead td{
+  font-weight: bold;
+  background-color: black;
+}
+
 img {
-  width: min(5rem, 100%);
+  max-width: 4rem;
+  aspect-ratio: 1/1.1;
+}
+.table-wrapper{
+  max-width: 100%;
+  overflow-x: auto;
 }
 </style>

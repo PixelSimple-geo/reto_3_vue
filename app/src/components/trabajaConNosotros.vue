@@ -30,34 +30,38 @@ const isError = computed(() => {
 </script>
 
 <template>
-  <h1 class="text-center">Trabaja con nosotros</h1>
-  <p>
-    Si estás interesado en establecer una colaboración con nuestra empresa,
-    necesitamos realizar un análisis de tus requisitos y ubicación.
-  </p>
-  <p v-if="statusCode !== 0" class="alert text-center" :class="{'alert-danger': isError, 'alert-success': !isError}"
-     role="alert">
-    {{ message }}
-  </p>
-  <form @submit="enviarDatosFormulario">
-    <div class="mb-3 form-floating">
-      <input type="email" class="form-control" id="email" name="email" aria-describedby="emailHelp">
-      <label for="email">Correo electrónico</label>
+  <div class="card">
+    <h1 class="card-title text-center">Trabaja con nosotros</h1>
+    <div class="card-body">
+      <p>
+        Si estás interesado en establecer una colaboración con nuestra empresa,
+        necesitamos realizar un análisis de tus requisitos y ubicación.
+      </p>
+      <p v-if="statusCode !== 0" class="alert text-center" :class="{'alert-danger': isError, 'alert-success': !isError}"
+        role="alert">
+        {{ message }}
+      </p>
+      <form @submit="enviarDatosFormulario">
+        <div class="mb-3 form-floating">
+          <input type="email" class="form-control" id="email" name="email" aria-describedby="emailHelp">
+          <label for="email">Correo electrónico</label>
+        </div>
+        <div class="mb-3 form-floating">
+          <input class="form-control" id="address" name="address">
+          <label for="address">Dirección de local</label>
+        </div>
+        <div class="mb-3 form-floating">
+          <input type="tel" class="form-control" id="telefono" name="telefono">
+          <label for="telefono">Número de teléfono</label>
+        </div>
+        <div class="mb-3 form-floating">
+          <textarea class="form-control" id="commentary" name="commentary" rows="3"></textarea>
+          <label for="commentary" class="form-label">Comentario</label>
+        </div>
+        <button type="submit" class="btn btn-primary">Enviar</button>
+      </form>
     </div>
-    <div class="mb-3 form-floating">
-      <input class="form-control" id="address" name="address">
-      <label for="address">Dirección de local</label>
-    </div>
-    <div class="mb-3 form-floating">
-      <input type="tel" class="form-control" id="telefono" name="telefono">
-      <label for="telefono">Número de teléfono</label>
-    </div>
-    <div class="mb-3 form-floating">
-      <textarea class="form-control" id="commentary" name="commentary" rows="3"></textarea>
-      <label for="commentary" class="form-label">Comentario</label>
-    </div>
-    <button type="submit" class="btn btn-primary">Enviar</button>
-  </form>
+  </div>
 </template>
 
 <style scoped>
@@ -75,5 +79,21 @@ p {
   max-width: 80ch;
   text-align: justify;
   margin-inline: auto;
+}
+.card {
+  max-width: 35rem;
+  margin: auto;
+  padding: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 0.25rem;
+  background-color: rgb(223, 219, 219);
+}
+
+.card-title {
+  margin-top: 0;
+}
+
+.card-body {
+  padding: 1rem;
 }
 </style>
