@@ -20,7 +20,6 @@ onMounted(() => {
 });
 
 function filterProductos(event) {
-  console.log(event.target.value);
   extraerProductos("productos/" + event.target.value);
 }
 </script>
@@ -29,6 +28,7 @@ function filterProductos(event) {
   <div v-if="categorias.length > 0">
     <label>Filtrar por categorías&nbsp;</label>
     <select @change="filterProductos">
+      <option value="">Todas las categorias</option>
       <template v-for="categoria in categorias">
         <option :value="categoria.id">{{categoria.nombreCategoria}}</option>
       </template>
@@ -37,6 +37,7 @@ function filterProductos(event) {
     <div class="product-container">
       <carta v-for="producto in productos" :producto="producto" :key="producto.id"/>
     </div>
+
 </template>
 
 <style scoped>

@@ -10,8 +10,8 @@ const enviarDatosFormulario = async (event) => {
   const formData = new FormData(event.target);
   const data = {
     direccionEnvio: formData.get("direccionEnvio"),
-    idFormatoProducto: formData.getAll("idFormatoProducto[]"),
-    unidades: formData.getAll("unidades[]")
+    idFormatoProducto: getIds("idFormatoProducto"),
+    unidades: getIds("unidades")
   };
   try {
     await requestData('pedidos/store', "POST", data);
@@ -21,6 +21,18 @@ const enviarDatosFormulario = async (event) => {
     await router.push({name: "pedidos"});
   }
 };
+
+function getIds(atribute) {
+  let cesta = localStorage.getItem("cesta");
+  if (cesta != null) {
+    cesta = JSON.parse(cesta);
+    let ids = [];
+    for(let i = 0; i < cesta.length; i++) {
+      ids.push(cesta[i][atribute]);
+    }
+    return ids;
+  }
+}
 </script>
 
 <template>

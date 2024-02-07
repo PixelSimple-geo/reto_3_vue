@@ -4,7 +4,6 @@ import {url} from "@/network.js";
 const props = defineProps({producto: Object});
 const producto = props.producto;
 
-
 const detalleAbierto = ref(false);
 const checkboxInput = ref(false);
 const formatoEnvaseId = ref(producto.formatos_producto[0].id);
@@ -25,6 +24,63 @@ const precioTotal = computed(() => precioUnitario.value * unidadesInput.value);
 const toggleDetalle = () => detalleAbierto.value = !detalleAbierto.value;
 watch(checkboxInput, newValue => detalleAbierto.value = newValue);
 
+function saveProduct() {
+  let cesta = localStorage.getItem("cesta");
+  let data = {
+    id: producto.id,
+    idFormatoProducto: formatoEnvaseId.value,
+    unidades: unidadesInput.value
+  };
+  if (checkboxInput.value) {
+    if (cesta != null) {
+      cesta = JSON.parse(cesta);
+      let index = findIndex();
+      if (findIndex() !== -1) {
+        cesta[index] = data;
+      } else cesta.push(data);
+      localStorage.setItem("cesta", JSON.stringify(cesta));
+    } else {
+      cesta = [data];
+      localStorage.setItem("cesta", JSON.stringify(cesta));
+    }
+  } else {
+    let index = findIndex();
+    if (cesta != null && index !== -1) {
+      cesta = JSON.parse(cesta);
+      cesta.splice(findIndex());
+      localStorage.setItem("cesta", JSON.stringify(cesta));
+    }
+  }
+}
+
+function findIndex() {
+  let cesta = localStorage.getItem("cesta");
+  let index = -1;
+  if (cesta != null) {
+    cesta = JSON.parse(cesta);
+    index = cesta.findIndex((element) => {
+      if (element.id === producto.id)
+        return true;
+    });
+  }
+  return index;
+}
+
+function setCard() {
+  let index = findIndex();
+  if (index !== -1) {
+    let cesta = localStorage.getItem("cesta");
+    if (cesta != null) {
+      cesta = JSON.parse(cesta);
+      let p = cesta[index];
+      formatoEnvaseId.value = p.idFormatoProducto;
+      unidadesInput.value = p.unidades;
+      checkboxInput.value = true;
+    }
+  }
+}
+
+setCard()
 
 </script>
 
@@ -35,7 +91,7 @@ watch(checkboxInput, newValue => detalleAbierto.value = newValue);
       <div class="detalle" :class="{ 'expandido': detalleAbierto, 'colapsado': !detalleAbierto }">
         <div>
           <label for="formato_envase">Formato del envase:&nbsp;</label>
-          <select id="formato_envase" v-model="formatoEnvaseId" name="idFormatoProducto[]" >
+          <select id="formato_envase" v-model="formatoEnvaseId" name="idFormatoProducto[]" @change="saveProduct">
             <option v-for="formatoProducto in producto.formatos_producto" :value="formatoProducto.id">
               {{formatoProducto.formatoEnvase}}
             </option>
@@ -44,7 +100,8 @@ watch(checkboxInput, newValue => detalleAbierto.value = newValue);
         <span>Precio unitario: {{ parseFloat(precioUnitario).toFixed(2) }}€</span>
         <div>
           <label for="unidades">Unidades:&nbsp;</label>
-          <input id="unidades" v-model="unidadesInput" name="unidades[]" type="number" min="1" :max="unidadesMax" size="5">
+          <input id="unidades" v-model="unidadesInput" name="unidades[]" type="number" min="1" :max="unidadesMax"
+                 size="5" @change="saveProduct">
         </div>
         <span>Precio total: {{ parseFloat(precioTotal).toFixed(2) }}€</span>
       </div>
@@ -55,7 +112,9 @@ watch(checkboxInput, newValue => detalleAbierto.value = newValue);
       <div>
         <h1>{{producto.nombreProducto}}</h1>
         <p>{{producto.descripcionProducto}}</p>
-        <label><input type="checkbox" v-model="checkboxInput"> Añadir a la cesta</label>
+        <label>
+          <input type="checkbox" v-model="checkboxInput" @change="saveProduct"> Añadir a la cesta
+        </label>
       </div>
     </section>
 
