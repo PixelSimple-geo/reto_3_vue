@@ -18,6 +18,7 @@ const enviarDatosFormulario = async (event) => {
   } catch (error) {
 
   } finally {
+    localStorage.removeItem("cesta");
     await router.push({name: "pedidos"});
   }
 };
