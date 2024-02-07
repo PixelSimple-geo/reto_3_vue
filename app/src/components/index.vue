@@ -2,7 +2,7 @@
 
 <template>
   <div class="hero-wrapper">
-    <div class="hero-container container p-5 text-light">
+    <div class="hero-container product-container p-5 text-light">
       <div class="row align-items-center justify-content-center">
         <section class="col-md-12 col-lg-6">
           <h1>Cerveza Killer Death</h1>
@@ -22,7 +22,7 @@
     <p class="text-center">
       Somos una pequeña empresa dedicada a la distribución de cerveza en España.
     </p>
-    <div class="container">
+    <div class="product-container">
       <div class="row">
         <div class="card col-md-6 col-xl-4">
           <img src="../assets/enviado.png" class="card-img-top" alt="Icono">

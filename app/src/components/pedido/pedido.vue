@@ -31,6 +31,12 @@ onMounted(extraerPedidos);
 </script>
 
 <template>
+  <template v-if="pedidos.length === 0">
+    <div class="feedback">
+      <p class="text-center">No tienes ningún pedido</p>
+      <p class="text-center">Crea uno <a href="/productos/add">Crear pedido</a></p>
+    </div>
+  </template>
   <template v-for="pedido in pedidos">
     <article :id="pedido.id">
       <div class="detalle">
@@ -96,6 +102,14 @@ onMounted(extraerPedidos);
 </template>
 
 <style scoped>
+.feedback {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-content: center;
+  height: 100%;
+}
+
 .pagination {
   justify-content: center;
 }

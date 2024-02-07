@@ -32,19 +32,29 @@ if (checkAuthentication()) {router.push({ name: 'home' });}
 </script>
 
 <template>
-  <div class="box">
-    <h1 class="text-center">Código de cliente</h1>
-    <div class="text-center text-danger">
-      <span>{{mensajeError}}</span>
-    </div>
-    <div>
-      <input name="codigo" placeholder="código de cliente" v-model="codigoCliente">
-      <button type="button" class="btn btn-primary" @click="iniciarSesion">Iniciar sesión</button>
+  <div class="box-wrapper">
+    <div class="box">
+      <h1 class="text-center">Código de cliente</h1>
+      <div class="text-center text-danger">
+        <span>{{mensajeError}}</span>
+      </div>
+      <div>
+        <input name="codigo" placeholder="código de cliente" v-model="codigoCliente">
+        <button type="button" class="btn btn-primary" @click="iniciarSesion">Iniciar sesión</button>
+      </div>
     </div>
   </div>
 </template>
 
 <style scoped>
+.box-wrapper {
+  height: 100%;
+  display: grid;
+  justify-content: center;
+  align-content: center;
+
+}
+
 .box > * + * {
   margin-top: 1rem;
 }
@@ -53,7 +63,7 @@ if (checkAuthentication()) {router.push({ name: 'home' });}
   background-color: rgba(33, 33, 33);
   color: white;
   border-radius: 10px;
-  padding: 1em;
+  padding: 2em;
   width: min(30rem, 100%);
   margin-inline: auto;
 }
