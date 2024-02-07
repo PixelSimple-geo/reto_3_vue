@@ -2,6 +2,7 @@
 import {onMounted, ref} from "vue";
 import {requestData} from "@/network.js";
 import {url} from "@/network.js";
+import {useRouter} from "vue-router";
 
 const extraerPedidos = async (uri = defaultURI + "?page=1") => {
   const respuesta = await requestData(uri, "GET");
@@ -28,13 +29,19 @@ const pedidos = ref([]);
 const paginacion = ref([]);
 onMounted(extraerPedidos);
 
+function redirect(){
+  console.log("tes");
+  router.push("/productos/add");
+}
+const router = useRouter();
+
 </script>
 
 <template>
   <template v-if="pedidos.length === 0">
     <div class="feedback">
       <p class="text-center">No tienes ningún pedido</p>
-      <p class="text-center">Crea uno <a href="/productos/add">Crear pedido</a></p>
+      <p class="text-center">Crea uno <a href="#" @click.prevent="redirect">Crear pedido</a></p>
     </div>
   </template>
   <template v-for="pedido in pedidos">
