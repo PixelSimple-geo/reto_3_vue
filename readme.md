@@ -17,3 +17,10 @@ Antes de lanzar la aplicación Vue, asegúrate de tener la aplicación Laravel y
     ```
 
 ¡Listo! La aplicación Vue debería estar ahora en funcionamiento. Si encuentras algún problema o tienes preguntas, no dudes en consultar la guía de la aplicación o comunicarte con el soporte técnico.
+
+Códigos de usuarios:
+- 12345678
+- 87654321
+- 98765432
+- 23456789
+- 34567890
